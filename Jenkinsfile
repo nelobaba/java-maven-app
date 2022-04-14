@@ -35,6 +35,13 @@ pipeline {
             }
         }
         stage("deploy") {
+            input {
+                message "Select an environment to deploy to"
+                ok "Done"
+                parameters {
+                    choice(name: 'ENV', choices: ['dev', 'qa', 'uat'], description: '')
+                }
+            }
             when {
                 expression {
                     params.executeDeploy
@@ -42,7 +49,7 @@ pipeline {
             }
             steps {
                 script {
-                    echo "deploying ${params.VERSION}"
+                    echo "deploying ${params.VERSION} to ${ENV}"
                     //gv.deployApp()
                 }
             }
