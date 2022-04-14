@@ -2,6 +2,9 @@ def gv
 
 pipeline {
     agent any
+    tools{
+        maven: 'Maven'
+    }
     environment {
         NEW_VERSION = "1.3.0"
         SERVER_CREDENTIALS = credentials('github-credentials')
@@ -22,7 +25,7 @@ pipeline {
             steps {
                 script {
                     echo "building jar with version ${NEW_VERSION}"
-                    //gv.buildJar()
+                    gv.buildJar()
                 }
             }
         }
