@@ -34,5 +34,16 @@ pipeline {
                 }
             }
         }
-    }   
+    }
+    post {
+        always {
+            echo "All Done !"
+        }
+        success {
+            echo "Successful"
+        }
+        failure {
+            echo "Job Failed"
+        }
+    }
 }
