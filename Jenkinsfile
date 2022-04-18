@@ -2,6 +2,9 @@ def gv
 
 pipeline {
     agent any
+    tools {
+        maven 'maven-3.6'
+    }
     environment {
         NEW_VERSION = "1.3.0"
         SERVER_CREDENTIALS = credentials('github-credentials')
@@ -22,6 +25,7 @@ pipeline {
             steps {
                 script {
                     echo "building jar with version ${NEW_VERSION}"
+                    sh 'mvn package'
                     //gv.buildJar()
                 }
             }
@@ -30,6 +34,11 @@ pipeline {
             steps {
                 script {
                     echo "building image"
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh 'docker build -t nelobaba/demo-app:2.0 .'
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh "docker push nelobaba/demo-app:2.0"
+                    }
                     //gv.buildImage()
                 }
             }
