@@ -25,8 +25,8 @@ pipeline {
             steps {
                 script {
                     echo "building jar with version ${NEW_VERSION}"
-                    sh 'mvn package'
-                    //gv.buildJar()
+//                     sh 'mvn package'
+                    gv.buildJar()
                 }
             }
         }
@@ -34,11 +34,11 @@ pipeline {
             steps {
                 script {
                     echo "building image"
-                    withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh 'docker build -t nelobaba/demo-app:2.0 .'
-                        sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push nelobaba/demo-app:2.0"
-                    }
+//                     withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+//                         sh 'docker build -t nelobaba/demo-app:2.0 .'
+//                         sh "echo $PASS | docker login -u $USER --password-stdin"
+//                         sh "docker push nelobaba/demo-app:2.0"
+//                     }
                     //gv.buildImage()
                 }
             }
