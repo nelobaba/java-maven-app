@@ -31,6 +31,11 @@ pipeline {
             }
         }
         stage("build image") {
+            when {
+                expression {
+                    BRANCH_NAME == 'master'
+                }
+            }
             steps {
                 script {
                     echo "building image"
@@ -53,7 +58,8 @@ pipeline {
             }
             when {
                 expression {
-                    params.executeDeploy
+                    //params.executeDeploy
+                    BRANCH_NAME == 'master'
                 }
             }
             steps {
