@@ -29,7 +29,7 @@ pipeline {
                     echo "building jar with version ${NEW_VERSION}"
 //                     sh 'mvn package'
 //                     gv.buildJar()
-                       buildJar()
+                       buildJar() //gotten from jenkins-shared-library global repo as a function defined there
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline {
 //                         sh "docker push nelobaba/demo-app:2.0"
 //                     }
                     //gv.buildImage()
-                    buildImage()
+                    buildImage "nelobaba/demo-app:3.0" //gotten from jenkins-shared-library global repo as a function defined there nelobaba/demo-app:2.0
                 }
             }
         }
