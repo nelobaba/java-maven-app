@@ -1,3 +1,5 @@
+//library identifier: 'jenkins-shared-library@master', retriever: modernSCM()
+@Library('jenkins-shared-library')
 def gv
 
 pipeline {
@@ -26,7 +28,8 @@ pipeline {
                 script {
                     echo "building jar with version ${NEW_VERSION}"
 //                     sh 'mvn package'
-                    gv.buildJar()
+//                     gv.buildJar()
+                       buildJar()
                 }
             }
         }
@@ -40,6 +43,7 @@ pipeline {
 //                         sh "docker push nelobaba/demo-app:2.0"
 //                     }
                     //gv.buildImage()
+                    buildImage()
                 }
             }
         }
