@@ -49,9 +49,9 @@ pipeline {
                 script {
                     echo "building image"
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh "docker build -t nelobaba/demo-app:${IMAGE_NAME }."
+                        sh "docker build -t nelobaba/demo-app:$IMAGE_NAME ."
                         sh "echo $PASS | docker login -u $USER --password-stdin"
-                        sh "docker push nelobaba/demo-app:${IMAGE_NAME}"
+                        sh "docker push nelobaba/demo-app:$IMAGE_NAME"
                     }
                     //gv.buildImage()
 //                     buildImage "nelobaba/demo-app:3.0" //  buildImage() gotten from jenkins-shared-library global repo as a function defined there nelobaba/demo-app:2.0
