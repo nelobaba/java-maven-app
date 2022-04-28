@@ -1,5 +1,5 @@
-//library identifier: 'jenkins-shared-library@master', retriever: modernSCM()
-@Library('jenkins-shared-library')
+//library identifier: 'jenkins-shared-library@master', retriever: modernSCM() //scoped to jenkinsfile
+@Library('jenkins-shared-library') //global
 def gv
 
 pipeline {
@@ -16,6 +16,17 @@ pipeline {
         booleanParam(name: 'executeDeploy', defaultValue: true, description: '')
     }
     stages {
+        stage('increment version'){
+            steps {
+                script {
+                    echo 'incrementing app versions...'
+                    sh 'mvn build-helper:parse-version versions:set -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion.nextIncrementalVersion} versions:commit'
+                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                    def version = matcher[0][1]
+                    env.IMAGE_NAME = "$version-$BUILD_NUMBER" //BUILD_NUMBER is the jenkins jobs build number
+                }
+            }
+        }
         stage("init") {
             steps {
                 script {
@@ -27,9 +38,9 @@ pipeline {
             steps {
                 script {
                     echo "building jar with version ${NEW_VERSION}"
-//                     sh 'mvn package'
+                    sh 'mvn clean package'
 //                     gv.buildJar()
-                       buildJar() //gotten from jenkins-shared-library global repo as a function defined there
+//                        buildJar() //gotten from jenkins-shared-library global repo as a function defined there
                 }
             }
         }
@@ -37,13 +48,13 @@ pipeline {
             steps {
                 script {
                     echo "building image"
-//                     withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-//                         sh 'docker build -t nelobaba/demo-app:2.0 .'
-//                         sh "echo $PASS | docker login -u $USER --password-stdin"
-//                         sh "docker push nelobaba/demo-app:2.0"
-//                     }
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh "docker build -t nelobaba/demo-app:$IMAGE_NAME ."
+                        sh "echo $PASS | docker login -u $USER --password-stdin"
+                        sh "docker push nelobaba/demo-app:$IMAGE_NAME"
+                    }
                     //gv.buildImage()
-                    buildImage "nelobaba/demo-app:3.0" //gotten from jenkins-shared-library global repo as a function defined there nelobaba/demo-app:2.0
+//                     buildImage "nelobaba/demo-app:3.0" //  buildImage() gotten from jenkins-shared-library global repo as a function defined there nelobaba/demo-app:2.0
                 }
             }
         }
