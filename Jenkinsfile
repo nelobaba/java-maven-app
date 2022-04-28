@@ -78,6 +78,22 @@ pipeline {
                 }
             }
         }
+        stage('commit version update'){
+            steps{
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
+                        sh 'git status'
+                        sh 'git branch'
+                        sh 'git config --list'
+
+                        sh "git remote set-url origin https://${USER}:${PASS}@github.com/nelobaba/java-maven-app.git"
+                        sh 'git add .'
+                        sh 'git commit -m "CI version bump"'
+                        sh "git push origin HEAD:versioning"
+                    }
+                }
+            }
+        }
     }
     post {
         always {
