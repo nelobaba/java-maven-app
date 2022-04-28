@@ -82,7 +82,7 @@ pipeline {
             steps{
                 script{
                     withCredentials([usernamePassword(credentialsId: 'github-credentials', passwordVariable: 'PASS', usernameVariable: 'USER')]){
-                        sh 'git config --global user.email "nelson.onyinye@gmail.com"'
+                        sh 'git config --global user.email "nelson.umunna@carleton.ca"'
                         sh 'git config --global user.username "nelobaba"'
 
                         sh 'git status'
