@@ -73,7 +73,7 @@ pipeline {
             }
             steps {
                 script {
-                    def dockerCmd = 'docker run -d -p 3080:3080 node_react_server:1.0'
+                    def dockerCmd = 'docker run -d -p 3080:3080 nelobaba/node_react_server:1.0'
                     echo "deploying ${params.VERSION} to ${ENV}"
                     sshagent(['ec2-server-key']) {
                         sh "ssh -o StrictHostKeyChecking=no ec2-user@3.96.179.0 ${dockerCmd}"
