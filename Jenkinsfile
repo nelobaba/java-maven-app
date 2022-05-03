@@ -73,11 +73,11 @@ pipeline {
             }
             steps {
                 script {
-                    //def dockerCmd = 'docker run -d -p 3080:3080 nelobaba/node_react_server:1.0'
-                    def dockerCmd2 = "docker run -d -p 8080:8080 nelobaba/demo-app:$IMAGE_NAME"
                     echo "deploying ${params.VERSION} to ${ENV}"
+                    def dockerComposeCmd = "docker-compose -f docker-compose.yml up --detach"
+                    sh "scp docker-compose.yml ec2-user@3.96.179.0:/home/ec2-user"
                     sshagent(['ec2-server-key']) {
-                        sh "ssh -o StrictHostKeyChecking=no ec2-user@3.96.179.0 ${dockerCmd2}"
+                        sh "ssh -o StrictHostKeyChecking=no ec2-user@3.96.179.0 ${dockerComposeCmd}"
                     }
                     //gv.deployApp()
                 }
