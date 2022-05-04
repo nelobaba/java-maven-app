@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   java-maven-app:
-    image: nelobaba/demo-app:1.1.1-21
+    image: ${IMAGE_NAME} #nelobaba/demo-app:1.1.1-21
     ports:
       - 8080:8080
   postgres:

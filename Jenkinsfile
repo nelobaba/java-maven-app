@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script {
                     echo "deploying ${params.VERSION} to ${ENV}"
-                    def shellCmd = "bash ./server-commands.sh"
+                    def shellCmd = "bash ./server-commands.sh nelobaba/demo-app:${IMAGE_NAME}"
                     sshagent(['ec2-server-key']) {
                         sh "scp server-commands.sh ec2-user@3.96.179.0:/home/ec2-user"
                         sh "scp docker-compose.yml ec2-user@3.96.179.0:/home/ec2-user"
